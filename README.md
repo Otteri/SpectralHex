@@ -1,6 +1,5 @@
+#
+![Colored Background](http://i.imgur.com/fZj6hMp.png)
 
-![Colored Background](http://imgur.com/a/WfpwW)
-
-# SpectralHex
 Rainmeter skin
 
