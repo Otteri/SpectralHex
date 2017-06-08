@@ -27,6 +27,7 @@ function Initialize()
 		cordinate = icon_size * i
 		if(is_horizontal == 1) then
 			launcher:SetX(cordinate)
+			launcher:SetH(50)
 			hold_area:SetH(icon_size)
 			hold_area:SetW(icon_size * launcher_count + icon_size)
 		else
@@ -39,6 +40,6 @@ end
 
 
 function Update()
-	--Active features come here if there is any...
+	--Active features come here if there will be any...
 end
 
