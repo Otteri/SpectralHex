@@ -16,24 +16,60 @@ function Initialize()
 		end
 	end
 	
-	--Reading needed values from "variables.inc"
+	--Reading necessary values from "variables.inc"
 	is_horizontal = tonumber(SKIN:GetVariable('Horizontal'))
+	is_inverse = tonumber(SKIN:GetVariable('Inverse'))
+	is_red = tonumber(SKIN:GetVariable('RedActivator'))
 	icon_size = SKIN:GetVariable('IconSize')
+	activator = SKIN:GetMeter('Activator')
+
+	if(is_red == 1) then
+		SKIN:Bang("!SetOption activator SolidColor 255,0,0,255")
+	end
+	
 	
 	--Arranging launchers. 
 	for i=1,launcher_count,1 do
 		launcher = SKIN:GetMeter('Launcher'..tostring(i))
 		hold_area = SKIN:GetMeter('HoldArea')
 		cordinate = icon_size * i
+		
 		if(is_horizontal == 1) then
-			launcher:SetX(cordinate)
-			launcher:SetH(50)
-			hold_area:SetH(icon_size)
-			hold_area:SetW(icon_size * launcher_count + icon_size)
-		else
-			launcher:SetY(cordinate)
-			hold_area:SetH(icon_size * launcher_count + icon_size)
-			hold_area:SetW(icon_size)
+			if(is_inverse == 0) then 
+				launcher:SetX(cordinate)
+				hold_area:SetW(icon_size * launcher_count + icon_size)
+				hold_area:SetH(icon_size)
+			
+			elseif(i == launcher_count) then
+				--Positioning 'Activator' in the final loop round.
+				activator:SetX(launcher_count * icon_size)
+				activator:SetY('r')
+			else
+				launcher:SetX(cordinate)
+				hold_area:SetH(icon_size)
+				hold_area:SetW(icon_size * launcher_count + icon_size)
+			end
+			
+
+		else	
+			if(is_inverse == 0) then 
+				launcher:SetY(cordinate)
+				hold_area:SetH(icon_size * launcher_count + icon_size)
+				hold_area:SetW(icon_size)
+				
+			elseif(i == launcher_count) and (is_inverse == 1) then
+				--Positioning 'Activator' in the final loop round.
+				activator:SetX('r')
+				activator:SetY(launcher_count * icon_size)
+				
+				
+			else
+				launcher:SetY(cordinate)
+				hold_area:SetH(icon_size * launcher_count + icon_size)
+				hold_area:SetW(icon_size)
+			end
+			
+			
 		end
 	end
 end
