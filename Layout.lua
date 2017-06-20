@@ -1,6 +1,7 @@
 --[[
-This file layouts icons either horizontally or vertically.
-File also takes care of the hold area, because it's different in both cases.
+This script arranges launchers and the activator hexagon according to user settings,
+which can be found in SpecteralHex.ini. In the other words, this script sets all
+x and y cordinates for meters in the skin.
 --]]
 
 
@@ -16,13 +17,14 @@ function Initialize()
 		end
 	end
 	
-	--Reading necessary values from "variables.inc"
+	--Reading settings and other necessary values from "variables.inc"
 	is_horizontal = tonumber(SKIN:GetVariable('Horizontal'))
 	is_inverse = tonumber(SKIN:GetVariable('Inverse'))
 	is_red = tonumber(SKIN:GetVariable('RedActivator'))
 	icon_size = SKIN:GetVariable('IconSize')
 	activator = SKIN:GetMeter('Activator')
 
+	--Turning activator to red if 'RedActivator' setting is 1 (on).
 	if(is_red == 1) then
 		SKIN:Bang("!SetOption activator SolidColor 255,0,0,255")
 	end
@@ -35,41 +37,33 @@ function Initialize()
 		cordinate = icon_size * i
 		
 		if(is_horizontal == 1) then
-			if(is_inverse == 0) then 
-				launcher:SetX(cordinate)
-				hold_area:SetW(icon_size * launcher_count + icon_size)
-				hold_area:SetH(icon_size)
-			
-			elseif(i == launcher_count) then
-				--Positioning 'Activator' in the final loop round.
+			if(i == launcher_count) and (is_inverse == 1) then
+				--Positioning 'Activator' in to other end in the final loop round.
 				activator:SetX(launcher_count * icon_size)
-				activator:SetY('r')
-			else
+				launcher:SetX(cordinate-icon_size)
+			elseif(is_inverse == 1) then 
+				launcher:SetX(cordinate-icon_size)
+				hold_area:SetH(icon_size)
+				hold_area:SetW(icon_size * launcher_count + icon_size)	
+			else	
 				launcher:SetX(cordinate)
 				hold_area:SetH(icon_size)
 				hold_area:SetW(icon_size * launcher_count + icon_size)
 			end
-			
-
 		else	
-			if(is_inverse == 0) then 
-				launcher:SetY(cordinate)
-				hold_area:SetH(icon_size * launcher_count + icon_size)
-				hold_area:SetW(icon_size)
-				
-			elseif(i == launcher_count) and (is_inverse == 1) then
-				--Positioning 'Activator' in the final loop round.
-				activator:SetX('r')
+			if(i == launcher_count) and (is_inverse == 1) then
+				--Positioning 'Activator' in to other end in the final loop round.
 				activator:SetY(launcher_count * icon_size)
-				
-				
+				launcher:SetY(cordinate-icon_size)
+			elseif(is_inverse == 1) then 
+				launcher:SetY(cordinate-icon_size) --positioning needs to start a block earlier here
+				hold_area:SetH(icon_size * launcher_count + icon_size)
+				hold_area:SetW(icon_size)			
 			else
 				launcher:SetY(cordinate)
 				hold_area:SetH(icon_size * launcher_count + icon_size)
 				hold_area:SetW(icon_size)
-			end
-			
-			
+			end		
 		end
 	end
 end
